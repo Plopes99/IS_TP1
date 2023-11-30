@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="airplane_disasters" type="airplane_disastersType"/>
+  <xs:complexType name="dateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="text" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="aircraft_typeType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="text" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="operatorType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="text" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fatalitiesType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="text" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="disasterType">
+    <xs:sequence>
+      <xs:element type="dateType" name="date"/>
+      <xs:element type="aircraft_typeType" name="aircraft_type"/>
+      <xs:element type="operatorType" name="operator"/>
+      <xs:element type="fatalitiesType" name="fatalities"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="countryType" mixed="true">
+    <xs:sequence>
+      <xs:element type="disasterType" name="disaster" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="categoryType">
+    <xs:sequence>
+      <xs:element type="countryType" name="country" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+    <xs:attribute type="xs:string" name="accident_type" use="optional"/>
+    <xs:attribute type="xs:string" name="damage_type" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="airplane_disastersType">
+    <xs:sequence>
+      <xs:element type="categoryType" name="category" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
