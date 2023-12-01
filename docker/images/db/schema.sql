@@ -32,3 +32,20 @@ CREATE TABLE disasters (
     country_id INT,
     FOREIGN KEY (country_id) REFERENCES countries(id)
 );
+
+CREATE OR REPLACE FUNCTION extract_valid_year(date_text text)
+RETURNS INTEGER AS $$
+DECLARE
+  valid_date DATE;
+BEGIN
+  -- Tenta converter o texto da data para um formato válido
+  BEGIN
+    valid_date := TO_DATE(date_text, 'DD-Mon-YYYY');
+    RETURN EXTRACT(YEAR FROM valid_date);
+  EXCEPTION
+    WHEN OTHERS THEN
+      -- Em caso de falha, retorna NULL ou um valor padrão
+      RETURN NULL;
+  END;
+END;
+$$ LANGUAGE plpgsql;

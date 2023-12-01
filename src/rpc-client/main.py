@@ -43,35 +43,47 @@ while True:
 
     elif (opcao == '3'):
         print("\n")
-        print("****************QUERIES****************")
-        print("**-----------------------------------**")
-        print("** 1-                **")
-        print("**-----------------------------------**")
-        print("** 2-             **")
-        print("**-----------------------------------**")
-        print("** 3-                **")
-        print("**-----------------------------------**")
-        print("***************************************")
+        print("************************QUERIES************************")
+        print("**---------------------------------------------------**")
+        print("** 1- Número de Desastres por Ano:                   **")
+        print("**---------------------------------------------------**")
+        print("** 2- Contagem de Desastres por Tipo de Aeronave:    **")
+        print("**---------------------------------------------------**")
+        print("** 3- Número de desastres desde 1927 até 2022:       **")
+        print("**---------------------------------------------------**")
+        print("*******************************************************")
         print("\n")
         opcao2 = str(input("Selecione Opcao: "))
 
         if (opcao2 == '1'):
-            for x in server.query1():
-                print(x)
+            try:
+                year_disasters = server.get_disaster_by_year()
+                print("Número de Desastres por Ano")
+                for row in year_disasters:
+                    print(f"Year: {row[0]}, Disaster Count: {row[1]}")
+            except RuntimeError as error:
+                print(f"Error: {error}")
 
         elif (opcao2 == '2'):
-            for x in server.query2():
-                print(x)
+            try:
+                airplane_disasters = server.get_disaster_count_by_aircraft_type()
+                print("Contagem de Desastres por Tipo de Aeronave:")
+                for row in airplane_disasters:
+                    print(f"Aircraft Type: {row[0]}, Disaster Count: {row[1]}")
+            except RuntimeError as error:
+                print(f"Error: {error}")
 
         elif (opcao2 == '3'):
-            #NAO DA
-            nome_pais = input('Introduza o nome do pais a procurar: \n')
-            for x in server.query3(nome_pais):
-                print(x)
+            try:
+                disaster_count_by_type = server.get_disasters_number()
+                print("Número de desastres desde 1927 até 2022:")
+                print(disaster_count_by_type)
+            except RuntimeError as error:
+                print(f"Error: {error}")
 
         elif(opcao == '4'):
             print("ESPEREMOS QUE NÃO HAJA MAIS DESASTRES")
-            pass
+            break
 
     else:
         print("OPÇÃO INVALIDA")
