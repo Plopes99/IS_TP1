@@ -45,12 +45,15 @@ services:
       - "./docker/volumes/data:/data"
     depends_on:
       - rpc-server
+    networks:
+      - rpc-network
 
   sample-xml-generation:
     container_name: is-xml-generation
     build: docker/images/python
     volumes:
-      - "./src/rpc-server/functions:/app"
+      - "./src/rpc-server/functions/xml_generation:/app"
+      - "./src/rpc-server/functions:/app/functions:/app/functions"
       - "./docker/volumes/data:/data"
     depends_on:
       - rpc-server

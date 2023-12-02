@@ -1,18 +1,18 @@
+import base64
 import signal
 import sys
-
-
-
 
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 from xmlrpc.server import SimpleXMLRPCServer
 
-from functions.string_length import string_length
-from functions.string_reverse import string_reverse
 from functions.csv_to_xml_converter import CSVtoXMLConverter
 from functions.validator import validator
-from functions.xml_data_manipulation import get_disaster_by_year, get_disasters_number, get_disaster_count_by_aircraft_type
 from functions.import_documents import import_documents
+from functions.save_xml_file import save_xml_file
+from functions.xml_data_manipulation import (get_disaster_by_year,
+                                             get_disasters_number,
+                                             get_disaster_count_by_aircraft_type,)
+
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
@@ -22,7 +22,7 @@ with SimpleXMLRPCServer(('rpc-server', 9000), requestHandler=RequestHandler, all
     server.register_introspection_functions()
 
 
-    def signal_handler(signum, frame):
+    def signal_handler():
         print("received signal")
         server.server_close()
 
@@ -38,9 +38,11 @@ with SimpleXMLRPCServer(('rpc-server', 9000), requestHandler=RequestHandler, all
     def get_xml_data():
         return get_converter().to_xml_str()
 
-    def validate_xml(xml_path: str):
-        xsd_path="xml_schema.xsd"
-        return validator(xml_path,xsd_path)
+    def validate_xml(xml_path):
+        xsd_path = "xml_schema.xsd"
+        result = validator(xml_path, xsd_path)
+        print("Validação concluída.")
+        return result
 
 
     # signals
@@ -49,17 +51,15 @@ with SimpleXMLRPCServer(('rpc-server', 9000), requestHandler=RequestHandler, all
     signal.signal(signal.SIGINT, signal_handler)
 
     # register both functions
-    server.register_function(string_reverse)
-    server.register_function(string_length)
     server.register_function(get_converter, 'get_converter')
     server.register_function(to_xml_str, 'to_xml_str')
     server.register_function(get_xml_data, 'get_xml_data')
     server.register_function(validate_xml, 'validate_xml')
-    server.register_function(import_documents, 'import_documents.py')
+    server.register_function(import_documents)
     server.register_function(get_disaster_by_year)
     server.register_function(get_disaster_count_by_aircraft_type)
     server.register_function(get_disasters_number)
-
+    server.register_function(save_xml_file)
 
     # start the server
     print("Starting the RPC Server...")

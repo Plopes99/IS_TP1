@@ -1,3 +1,5 @@
+import base64
+import os
 import xmlrpc.client
 
 print("connecting to server...")
@@ -29,11 +31,20 @@ while True:
     elif (opcao == '2'):
         print("A VALIDAR")
         xml_path = "arquivo.xml"
-        result = server.validate_xml(xml_path)
+        with open("arquivo.xml", "rb")as file:
+            file_content = xmlrpc.client.Binary(base64.b64encode(file.read()))
+
+        result = server.validate_xml(file_content)
+
+        print("Validação bem-sucedida." if result else "Falha na validação.")
+
+        with open('arquivo.xml', 'rb') as file:
+            xml_content_base64 = base64.b64encode(file.read()).decode('utf-8')
+        result = server.save_xml_file(xml_content_base64)
+        print(result)
 
         nome = input("NOME DO FICHEIRO A GUARDAR: ")
-        result_data= server.import_documents(nome, xml_path)
-        print("\nSUCESSO\n")
+        result_data = server.import_documents(nome, xml_path)
         print(result_data)
 
         if result:
@@ -49,7 +60,7 @@ while True:
         print("**---------------------------------------------------**")
         print("** 2- Contagem de Desastres por Tipo de Aeronave:    **")
         print("**---------------------------------------------------**")
-        print("** 3- Número de desastres desde 1927 até 2022:       **")
+        print("** 3- Número de desastres desde 1919 até 2022:       **")
         print("**---------------------------------------------------**")
         print("*******************************************************")
         print("\n")
@@ -76,7 +87,7 @@ while True:
         elif (opcao2 == '3'):
             try:
                 disaster_count_by_type = server.get_disasters_number()
-                print("Número de desastres desde 1927 até 2022:")
+                print("Número de desastres desde 1919 até 2022:")
                 print(disaster_count_by_type)
             except RuntimeError as error:
                 print(f"Error: {error}")
