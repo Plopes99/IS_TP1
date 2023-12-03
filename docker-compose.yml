@@ -1,0 +1,64 @@
+services:
+
+  db:
+    container_name: is-db
+    build: docker/images/db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - rpc-network
+
+  rpc-server:
+    container_name: is-rpc-server
+    build: docker/images/python
+    volumes:
+      - "./src/rpc-server:/app"
+      - "./docker/volumes/data:/data"
+    depends_on:
+      - db
+    ports:
+      - "9000:9000"
+    networks:
+      - rpc-network
+
+
+  rpc-client:
+    container_name: is-rpc-client
+    build: docker/images/python
+    volumes:
+      - "./src/rpc-client:/app"
+      - "./docker/volumes/data:/data"
+    depends_on:
+      - rpc-server
+    networks:
+      - rpc-network
+    stdin_open: true
+
+
+  sample-db-access:
+    container_name: is-db-access
+    build: docker/images/python
+    volumes:
+      - "./src/rpc-server/functions/db-access:/app"
+      - "./docker/volumes/data:/data"
+    depends_on:
+      - rpc-server
+    networks:
+      - rpc-network
+
+  sample-xml-generation:
+    container_name: is-xml-generation
+    build: docker/images/python
+    volumes:
+      - "./src/rpc-server/functions/xml_generation:/app"
+      - "./src/rpc-server/functions:/app/functions:/app/functions"
+      - "./docker/volumes/data:/data"
+    depends_on:
+      - rpc-server
+networks:
+  rpc-network:
+
+volumes:
+  postgres_data:
