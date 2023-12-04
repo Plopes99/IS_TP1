@@ -1,5 +1,5 @@
 -- Criação da tabela imported_documents
-CREATE TABLE public.imported_documents (
+CREATE TABLE public.imported_documents(
 	id              serial PRIMARY KEY,
 	file_name       VARCHAR(250) UNIQUE NOT NULL,
 	xml             XML NOT NULL,
@@ -8,24 +8,24 @@ CREATE TABLE public.imported_documents (
 );
 
 -- Criação da tabela airplane_disasters
-CREATE TABLE airplane_disasters (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE public.airplane_disasters (
+    id serial PRIMARY KEY,
     category_name VARCHAR(255) NOT NULL,
     accidents_types VARCHAR(255),
     damage_types VARCHAR(255)
 );
 
 -- Criação da tabela countries
-CREATE TABLE countries (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE public.countries (
+    id serial PRIMARY KEY,
     country_name VARCHAR(255) NOT NULL,
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES airplane_disasters(id)
 );
 
 -- Criação da tabela disasters
-CREATE TABLE disasters (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE public.disasters (
+    id SERIAL PRIMARY KEY,
     date DATE,
     aircraft_type VARCHAR(255),
     operator VARCHAR(255),

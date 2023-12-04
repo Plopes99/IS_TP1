@@ -37,7 +37,8 @@ class CSVtoXMLConverter:
                 date=row["date"],
                 aircraft_type=row["Air-craft type"],
                 operator=row["operator"],
-                fatalities=row["fatilites"]
+                fatalities=row["fatilites"],
+                category_code=row["category"]
             ),
             after_create=after_creating_disaster
         )
@@ -56,13 +57,14 @@ class CSVtoXMLConverter:
                 country_el.set("name", country._name)
 
                 for disaster in country._disasters:
-                    disaster_el = ET.Element("disaster")
-                    disaster_el.append(ET.Element("date", text=disaster._date))
-                    disaster_el.append(ET.Element("aircraft_type", text=disaster._aircraft_type))
-                    disaster_el.append(ET.Element("operator", text=disaster._operator))
-                    disaster_el.append(ET.Element("fatalities", text=str(disaster._fatalities)))
+                    if disaster._category_code == category._code:
+                        disaster_el = ET.Element("disaster")
+                        disaster_el.append(ET.Element("date", text=disaster._date))
+                        disaster_el.append(ET.Element("aircraft_type", text=disaster._aircraft_type))
+                        disaster_el.append(ET.Element("operator", text=disaster._operator))
+                        disaster_el.append(ET.Element("fatalities", text=str(disaster._fatalities)))
 
-                    country_el.append(disaster_el)
+                        country_el.append(disaster_el)
 
                 category_el.append(country_el)
 

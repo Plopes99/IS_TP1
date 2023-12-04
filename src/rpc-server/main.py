@@ -1,6 +1,9 @@
 import base64
 import signal
 import sys
+import os
+
+print(sys.path)
 
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 from xmlrpc.server import SimpleXMLRPCServer
@@ -14,6 +17,11 @@ from functions.xml_data_manipulation import (get_disaster_by_year,
                                              get_disasters_number,
                                              get_disaster_count_by_aircraft_type,)
 
+
+
+b = os.path.abspath("C:/Users/35191/IPVC/3ano/IS/PycharmProjects/IS_TP1/src/rpc-server/functions/")
+sys.path.append(b)
+print(sys.path)
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)

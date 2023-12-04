@@ -1,9 +1,17 @@
 import base64
 import os
 import xmlrpc.client
+import sys
+
 
 print("connecting to server...")
 server = xmlrpc.client.ServerProxy('http://rpc-server:9000')
+
+
+
+a = os.path.abspath("C:/Users/35191/IPVC/3ano/IS/PycharmProjects/IS_TP1/src/rpc-server/functions/")
+sys.path.append(a)
+print(sys.path)
 
 while True:
     print("\n")
