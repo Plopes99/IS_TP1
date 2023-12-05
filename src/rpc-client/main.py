@@ -46,19 +46,24 @@ while True:
 
         print("O XML é valido!" if result else "Pedimos desculpa, o XML parece ser inválido!")
 
+
         with open('arquivo.xml', 'rb') as file:
             xml_content_base64 = base64.b64encode(file.read()).decode('utf-8')
-        result = server.save_xml_file(xml_content_base64)
-        print(result)
+            result = server.save_xml_file(xml_content_base64)
+            print(result)
 
-        nome = input("NOME DO FICHEIRO A GUARDAR: ")
-        print("Iniciando importação para a base de dados...")
-        result_data = server.import_documents(nome, xml_path)
-        if result_data:
-            print(result_data)
+        if result:
+
+            nome = input("NOME DO FICHEIRO A GUARDAR: ")
+            print("Iniciando importação para a base de dados...")
+            result_data = server.import_documents(nome, xml_path)
+            if result_data:
+                print(result_data)
+            else:
+                print('Dados importados com sucesso!')
+
         else:
-            print('Dados importados com sucesso!')
-
+            print('Não foi possivel importar os dados!')
 
 
     elif (opcao == '3'):
